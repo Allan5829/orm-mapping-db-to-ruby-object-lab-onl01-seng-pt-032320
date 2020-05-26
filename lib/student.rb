@@ -90,6 +90,21 @@ class Student
     end
   end
 
+  def self.students_below_12th_grade
+    sql = <<-SQL
+      SELECT *
+      FROM students
+      WHERE grade < 12
+    SQL
+
+    array = []
+    DB[:conn].execute(sql).map do |row|
+      student = self.new_from_db(row)
+      array << student
+    end
+    array
+  end
+
   def save
     sql = <<-SQL
       INSERT INTO students (name, grade)
